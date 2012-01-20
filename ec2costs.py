@@ -4,7 +4,6 @@ import urllib2
 import pprint
 
 ondemand_costs_url = "http://aws.amazon.com/ec2/pricing/pricing-on-demand-instances.json"
-reserved_costs_url = "http://aws.amazon.com/ec2/pricing/pricing-reserved-instances.json"
 
 ec2_type_map = {"stdODI": "m1",
                 "uODI": "t1",
@@ -51,8 +50,6 @@ def get_current_ondemand_costs():
 
     return prices
 
-def get_current_reserved_costs():
-    print "Implement"
 
 if __name__ == "__main__":
    pprint.pprint(get_current_ondemand_costs())
