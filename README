@@ -1,0 +1,5 @@
+Currently Amazon's EC2 API does not have any end points for getting current prices for reserved or ondemand instances.  
+I found the JSON files that Amazon uses to display http://aws.amazon.com/ec2/pricing/ 
+but unfortunately the names for regions, instance types and sizes were all different 
+values then what Amazon uses in its API.  This module aims to solve the issue of getting 
+EC2 pricing data and having it in a format compatible with results from it's API.
