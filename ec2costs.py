@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import json
 import urllib2
+import pprint
 
 ondemand_costs_url = "http://aws.amazon.com/ec2/pricing/pricing-on-demand-instances.json"
 reserved_costs_url = "http://aws.amazon.com/ec2/pricing/pricing-reserved-instances.json"
@@ -53,4 +54,4 @@ def get_current_reserved_costs():
     print "Implement"
 
 if __name__ == "__main__":
-   print get_current_ondemand_costs() 
+   pprint.pprint(get_current_ondemand_costs())
