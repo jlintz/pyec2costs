@@ -37,7 +37,8 @@ def get_current_ondemand_costs():
 
     for region in data["config"]["regions"]:
         region = dict(region)
-        prices[ec2_region_map[region["region"]]] = {}
+        region_string = ec2_region_map[region["region"]]
+        prices[region_string] = {}
         for instance in region["instanceTypes"]:
             inst_type = instance["type"]
             for size in instance["sizes"]:
@@ -46,7 +47,7 @@ def get_current_ondemand_costs():
                         linux_cost = values["prices"]["USD"]
                     elif values["name"] == "mswin":
                         win_cost = values["prices"]["USD"]
-                prices[ec2_region_map[region["region"]]][ec2_type_map[inst_type] + "." + ec2_size_map[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
+                prices[region_string][ec2_type_map[inst_type] + "." + ec2_size_map[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
 
     return prices
 
