@@ -10,7 +10,9 @@ ec2_type_map = {"stdODI": "m1",
                 "hiMemODI": "m2",
                 "hiCPUODI": "c1",
                 "clusterComputeI": "cc1",
-                "clusterGPUI": "cg1"}
+                "clusterGPUI": "cg1",
+                "secgenstdODI": "m3",
+                "hiIoODI": "hi1"}
 
 ec2_size_map = {"sm": "small",
                 "lg": "large",
