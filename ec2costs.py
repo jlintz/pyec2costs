@@ -27,6 +27,7 @@ ec2_region_map = {"apac-sin": "ap-northeast-1",
                 "us-west": "us-west-1",
                 "eu-ireland": "eu-west-1",
                 "apac-tokyo": "ap-southeast-1",
+                "apac-syd": "ap-southeast-2",
                 "us-east": "us-east-1",
                 "us-west-2": "us-west-2",
                 "sa-east-1": "sa-east-1"}
