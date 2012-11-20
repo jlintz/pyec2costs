@@ -41,19 +41,19 @@ def get_current_ondemand_costs():
     for region in data["config"]["regions"]:
         region = dict(region)
         try:
-		region_string = ec2_region_map[region["region"]]
-		prices[region_string] = {}
-		for instance in region["instanceTypes"]:
-		    inst_type = instance["type"]
-		    for size in instance["sizes"]:
-			for values in size["valueColumns"]:
-			    if values["name"] == "linux":
-				linux_cost = values["prices"]["USD"]
-			    elif values["name"] == "mswin":
-				win_cost = values["prices"]["USD"]
-			prices[region_string][ec2_type_map[inst_type] + "." + ec2_size_map[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
-	except:
-                print >> sys.stderr, "WARNING: Amazon added a new region or instance type that we don't know about yet."
+            region_string = ec2_region_map[region["region"]]
+            prices[region_string] = {}
+            for instance in region["instanceTypes"]:
+                inst_type = instance["type"]
+                for size in instance["sizes"]:
+                    for values in size["valueColumns"]:
+                        if values["name"] == "linux":
+                            linux_cost = values["prices"]["USD"]
+                        elif values["name"] == "mswin":
+                            win_cost = values["prices"]["USD"]
+                    prices[region_string][ec2_type_map[inst_type] + "." + ec2_size_map[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
+        except:
+            print >> sys.stderr, "WARNING: Amazon added a new region or instance type that we don't know about yet."
 
     return prices
 
