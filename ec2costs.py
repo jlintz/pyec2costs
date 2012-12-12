@@ -48,9 +48,9 @@ def get_current_ondemand_costs():
                 for size in instance["sizes"]:
                     for values in size["valueColumns"]:
                         if values["name"] == "linux":
-                            linux_cost = values["prices"]["USD"]
+                            linux_cost = float(values["prices"]["USD"])
                         elif values["name"] == "mswin":
-                            win_cost = values["prices"]["USD"]
+                            win_cost = float(values["prices"]["USD"])
                     prices[region_string][ec2_type_map[inst_type] + "." + ec2_size_map[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
         except:
             print >> sys.stderr, "WARNING: Amazon added a new region or instance type that we don't know about yet."
