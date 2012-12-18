@@ -2,11 +2,11 @@
 import json
 import urllib2
 import pprint
-import sys
+import logging
 
-ondemand_costs_url = "http://aws.amazon.com/ec2/pricing/pricing-on-demand-instances.json"
+ONDEMAND_COSTS_URL = "http://aws.amazon.com/ec2/pricing/pricing-on-demand-instances.json"
 
-ec2_type_map = {"stdODI": "m1",
+EC2_TYPE_MAP = {"stdODI": "m1",
                 "uODI": "t1",
                 "hiMemODI": "m2",
                 "hiCPUODI": "c1",
@@ -15,7 +15,7 @@ ec2_type_map = {"stdODI": "m1",
                 "secgenstdODI": "m3",
                 "hiIoODI": "hi1"}
 
-ec2_size_map = {"sm": "small",
+EC2_SIZE_MAP = {"sm": "small",
                 "lg": "large",
                 "xl": "xlarge",
                 "u": "micro",
@@ -24,24 +24,30 @@ ec2_size_map = {"sm": "small",
                 "med": "medium",
                 "xxxxxxxxl": "8xlarge"}
 
-ec2_region_map = {"apac-sin": "ap-northeast-1",
-                "us-west": "us-west-1",
-                "eu-ireland": "eu-west-1",
-                "apac-tokyo": "ap-southeast-1",
-                "apac-syd": "ap-southeast-2",
-                "us-east": "us-east-1",
-                "us-west-2": "us-west-2",
-                "sa-east-1": "sa-east-1"}
+EC2_REGION_MAP = {"apac-sin": "ap-northeast-1",
+                  "us-west": "us-west-1",
+                  "eu-ireland": "eu-west-1",
+                  "apac-tokyo": "ap-southeast-1",
+                  "apac-syd": "ap-southeast-2",
+                  "us-east": "us-east-1",
+                  "us-west-2": "us-west-2",
+                  "sa-east-1": "sa-east-1"}
 
 
 def get_current_ondemand_costs():
+    """
+    Return a dictionary of the current AWS ondemand prices.
+    The dictionary is keyed by region. dict[region][instance][os]
+
+    @return: dict,
+    """
     prices = {}
-    data = json.loads(urllib2.urlopen(ondemand_costs_url).read())
+    data = json.loads(urllib2.urlopen(ONDEMAND_COSTS_URL).read())
 
     for region in data["config"]["regions"]:
         region = dict(region)
         try:
-            region_string = ec2_region_map[region["region"]]
+            region_string = EC2_REGION_MAP[region["region"]]
             prices[region_string] = {}
             for instance in region["instanceTypes"]:
                 inst_type = instance["type"]
@@ -51,12 +57,12 @@ def get_current_ondemand_costs():
                             linux_cost = float(values["prices"]["USD"])
                         elif values["name"] == "mswin":
                             win_cost = float(values["prices"]["USD"])
-                    prices[region_string][ec2_type_map[inst_type] + "." + ec2_size_map[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
+                    prices[region_string][EC2_TYPE_MAP[inst_type] + "." + EC2_SIZE_MAP[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
         except:
-            print >> sys.stderr, "WARNING: Amazon added a new region or instance type that we don't know about yet."
+            logging.error("WARNING: Amazon added a new region or instance type that we don't know about yet.")
 
     return prices
 
 
 if __name__ == "__main__":
-   pprint.pprint(get_current_ondemand_costs())
+    pprint.pprint(get_current_ondemand_costs())
