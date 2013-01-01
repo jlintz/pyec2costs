@@ -13,7 +13,8 @@ EC2_TYPE_MAP = {"stdODI": "m1",
                 "clusterComputeI": "cc1",
                 "clusterGPUI": "cg1",
                 "secgenstdODI": "m3",
-                "hiIoODI": "hi1"}
+                "hiIoODI": "hi1",
+                "hiStoreODI": "hs1"}
 
 EC2_SIZE_MAP = {"sm": "small",
                 "lg": "large",
