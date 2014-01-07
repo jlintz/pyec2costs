@@ -6,25 +6,6 @@ import logging
 
 ONDEMAND_COSTS_URL = "http://aws.amazon.com/ec2/pricing/pricing-on-demand-instances.json"
 
-EC2_TYPE_MAP = {"stdODI": "m1",
-                "uODI": "t1",
-                "hiMemODI": "m2",
-                "hiCPUODI": "c1",
-                "clusterComputeI": "cc1",
-                "clusterGPUI": "cg1",
-                "secgenstdODI": "m3",
-                "hiIoODI": "hi1",
-                "hiStoreODI": "hs1"}
-
-EC2_SIZE_MAP = {"sm": "small",
-                "lg": "large",
-                "xl": "xlarge",
-                "u": "micro",
-                "xxl": "2xlarge",
-                "xxxxl": "4xlarge",
-                "med": "medium",
-                "xxxxxxxxl": "8xlarge"}
-
 EC2_REGION_MAP = {"apac-sin": "ap-northeast-1",
                   "us-west": "us-west-1",
                   "eu-ireland": "eu-west-1",
@@ -53,12 +34,13 @@ def get_current_ondemand_costs():
             for instance in region["instanceTypes"]:
                 inst_type = instance["type"]
                 for size in instance["sizes"]:
+                    linux_cost = win_cost = 'NA'
                     for values in size["valueColumns"]:
                         if values["name"] == "linux":
                             linux_cost = float(values["prices"]["USD"])
                         elif values["name"] == "mswin":
                             win_cost = float(values["prices"]["USD"])
-                    prices[region_string][EC2_TYPE_MAP[inst_type] + "." + EC2_SIZE_MAP[size["size"]]] = {"windows": win_cost, "linux": linux_cost}
+                    prices[region_string][size["size"]] = {"windows": win_cost, "linux": linux_cost}
         except:
             logging.error("WARNING: Amazon added a new region or instance type that we don't know about yet.")
 
